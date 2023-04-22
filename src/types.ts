@@ -1,11 +1,13 @@
 export type CartItemType = {
-  title: string;
+  id: string;
+  name: string;
   quantity: number;
-  total: number;
   price: number;
+  totalPrice: number;
 };
 
 export type ProductItemType = {
+  id: string;
   title: string;
   price: number;
   description: string;
