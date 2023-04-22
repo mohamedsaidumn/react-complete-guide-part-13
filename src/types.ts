@@ -12,3 +12,9 @@ export type ProductItemType = {
   price: number;
   description: string;
 };
+
+export type NotificationType = {
+  status: string;
+  title: string;
+  message: string;
+};
