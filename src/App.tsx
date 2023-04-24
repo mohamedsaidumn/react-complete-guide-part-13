@@ -4,11 +4,9 @@ import Products from "./components/Shop/Products";
 import { useSelector } from "react-redux";
 import { rootReducerType } from "./store/types";
 import { useDispatch } from "react-redux";
-import { NotificationType } from "./types";
-import { rootActions } from "./store";
 import { Fragment, useEffect } from "react";
 import Notification from "./components/UI/Notification";
-import { sendCartData } from "./store/cart-slice";
+import { sendCartData, fetchCartData } from "./store/cart-actions";
 import { ThunkDispatch } from "redux-thunk";
 import { Action } from "redux";
 
@@ -24,6 +22,10 @@ function App() {
   const notification = useSelector(
     (state: rootReducerType) => state.ui.notification
   );
+
+  useEffect(() => {
+    dispatch(fetchCartData());
+  }, [dispatch]);
 
   useEffect(() => {
     if (isInitial) {
