@@ -8,11 +8,15 @@ import { NotificationType } from "./types";
 import { rootActions } from "./store";
 import { Fragment, useEffect } from "react";
 import Notification from "./components/UI/Notification";
+import { sendCartData } from "./store/cart-slice";
+import { ThunkDispatch } from "redux-thunk";
+import { Action } from "redux";
 
 let isInitial = true;
+type AppDispatch = ThunkDispatch<rootReducerType, null, Action>;
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const showCart = useSelector(
     (state: rootReducerType) => state.ui.cartIsVisible
   );
@@ -22,50 +26,14 @@ function App() {
   );
 
   useEffect(() => {
-    const sendCartData = async () => {
-      dispatch(
-        rootActions.ui.showNotification({
-          status: "pending",
-          title: "Sending...",
-          message: "Sending cart data!",
-        })
-      );
-      const response = await fetch(
-        "https://react-http-160f2-default-rtdb.europe-west1.firebasedatabase.app/cart.json",
-        {
-          method: "PUT",
-          body: JSON.stringify(cart),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Sending cart data failed.");
-      }
-
-      dispatch(
-        rootActions.ui.showNotification({
-          status: "success",
-          title: "Success!",
-          message: "Sent cart data successfully!",
-        })
-      );
-    };
-
     if (isInitial) {
       isInitial = false;
       return;
     }
 
-    sendCartData().catch((error) => {
-      dispatch(
-        rootActions.ui.showNotification({
-          status: "error",
-          title: "Error!",
-          message: "Sending cart data failed!",
-        })
-      );
-    });
+    dispatch(sendCartData(cart));
   }, [cart, dispatch]);
+
   return (
     <Fragment>
       {notification && (
