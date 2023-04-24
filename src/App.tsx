@@ -32,8 +32,9 @@ function App() {
       isInitial = false;
       return;
     }
-
-    dispatch(sendCartData(cart));
+    if (cart.isChanged) {
+      dispatch(sendCartData(cart));
+    }
   }, [cart, dispatch]);
 
   return (
